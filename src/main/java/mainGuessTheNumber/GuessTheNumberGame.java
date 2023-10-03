@@ -1,9 +1,5 @@
 package mainGuessTheNumber;
-
-
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 public class GuessTheNumberGame {
     public static int generateRandomNumber() {
         Random random = new Random();
@@ -18,87 +14,84 @@ public class GuessTheNumberGame {
         System.out.println(targetNumber);
         checkGuess(targetNumber);
     }
-    public static void checkGuess(int args){
+    public static void checkGuess(int number){
         int turn = 0;
+
         HumanPlayer humanPlayer = new HumanPlayer();
         ComputerPlayer computerPlayer = new ComputerPlayer();
 
-        //Scanner input = new Scanner(System.in);
-        String playerName = humanPlayer.getName();
-       // System.out.println(">>----------------------------------------------<<");
-        //System.out.println(playerName + " Choose a number between 1 y 100: ");
-        int humanNumberChoose = humanPlayer.makeGuess();
 
-
-        // System.out.println(numberChoose);
-
-
+        String playerName = humanPlayer.checkName();
+        int humanNumberChoose = humanPlayer.checkTheGuess();
         int computerNumberChoose = computerPlayer.makeGuess();
-        ArrayList<Integer> numbersListHuman;
-        ArrayList<Integer> numbersListComputer = new ArrayList<>();
+
+
+        //Clean arrays
+        humanPlayer.getGuesses().clear();
+        computerPlayer.getGuesses().clear();
 
 
         while(turn >= 0){
             if(turn % 2 == 0){
-
-                if(args > humanNumberChoose && humanNumberChoose >= 1){
+                if(number > humanNumberChoose && humanNumberChoose >= 1){
                     System.out.println(">>----------------------------------------------<<");
                     System.out.println(playerName + " " +  humanNumberChoose + " Is very low .  It´s the Computer´s turn: ");
                     turn ++;
+                    humanPlayer.setGuesses(humanNumberChoose);
                     computerNumberChoose = computerPlayer.makeGuess();
+
 
                 }else if(humanNumberChoose == 0 || humanNumberChoose > 100) {
                     System.out.println(">>----------------------------------------------<<");
                     System.out.println("Error: 😣 " + playerName + " You must choose a number between 1 and 100. It´s the Computer´s turn: ");
-                    humanPlayer.getGuesses(humanNumberChoose);
+                    humanPlayer.setGuesses(humanNumberChoose);
                     turn++;
                     computerNumberChoose = computerPlayer.makeGuess();
 
-                }else if(args < humanNumberChoose){
+                }else if(number < humanNumberChoose){
                     System.out.println(">>----------------------------------------------<<");
                     System.out.println(playerName + " " + humanNumberChoose + " Is very high. It´s the Computer´s turn: ");
-                    humanPlayer.getGuesses(humanNumberChoose);
+                   humanPlayer.setGuesses(humanNumberChoose);
 
                     turn++;
                     computerNumberChoose = computerPlayer.makeGuess();
 
                 }else{
-                    numbersListHuman = humanPlayer.getGuesses(humanNumberChoose);
+                    humanPlayer.setGuesses(humanNumberChoose);
                     System.out.println(">>----------------------------------------------<<");
-                    System.out.println("Congrats " + playerName +" You won. " +"Good job 🎉");
-                    System.out.println("Your elections were: " + numbersListHuman);
+                    System.out.println("Congrats " + playerName +". You won. " +"Good job 🎉");
+                    System.out.println("Your elections were: " + humanPlayer.getGuesses());
                     break;
                 }
             }else{
-                if(args > computerNumberChoose){
+                if(number > computerNumberChoose){
                     System.out.println(">>----------------------------------------------<<");
-                    System.out.println("Computer chose: " +computerNumberChoose + " Is very low.  " );
+                    System.out.println("Computer chose: " + computerNumberChoose + " Is very low.  " );
                     System.out.println("--------------------------------------------------");
                     System.out.println(" It´s: "+ playerName  + "'s turn:"  );
-                    numbersListComputer = computerPlayer.getGuesses(computerNumberChoose);
+                    computerPlayer.setGuesses(computerNumberChoose);
                     turn ++;
                     humanNumberChoose = humanPlayer.makeGuess();
 
-                }else if(args < computerNumberChoose) {
+                }else if(number < computerNumberChoose) {
                     System.out.println(">>----------------------------------------------<<");
                     System.out.println("Computer chose: " + computerNumberChoose + " Is very high");
                     System.out.println("--------------------------------------------------");
                     System.out.println(" It´s: " + playerName + "'s turn:");
-                    numbersListComputer = computerPlayer.getGuesses(computerNumberChoose);
+                    computerPlayer.setGuesses(computerNumberChoose);
                     turn++;
                     humanNumberChoose = humanPlayer.makeGuess();
 
                 }else{
+                    computerPlayer.setGuesses(computerNumberChoose);
                     System.out.println(">>----------------------------------------------<<");
                     System.out.println("The computer won");
-                    System.out.println("Their elections were: " + numbersListComputer);
+                    System.out.println("Their elections were: " + computerPlayer.getGuesses());
+
                     break;
                 }
 
             }
-
         }
-
-
     }
 }
