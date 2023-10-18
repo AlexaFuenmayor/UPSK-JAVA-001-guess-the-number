@@ -9,11 +9,17 @@ public class  HumanPlayer extends Player {
         return guess;
     }
 
-    public HumanPlayer(String name) {
+    public void makeGuess(Scanner scanner){
+        this.scanner = scanner;
+    }
+
+    public HumanPlayer(String name, int guess) {
         this.setName(name);
+        this.setGuesses(guess);
     }
 
     public HumanPlayer() {
+        this.scanner = new Scanner(System.in);
 
     }
     public int checkTheGuess(){
@@ -23,8 +29,7 @@ public class  HumanPlayer extends Player {
                 guess = scanner.nextInt();
                 guesses.add(guess);
                 break;
-            }catch(InputMismatchException e){
-                System.out.println("Error: ❌ You must to enter a number");
+            }catch(InputMismatchException e){ System.out.println("Error: ❌ You must to enter a number");
                 scanner.nextLine();
             }
         }
